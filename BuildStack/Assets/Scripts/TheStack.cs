@@ -5,14 +5,16 @@ using UnityEngine;
 public class TheStack : MonoBehaviour {
 
 
-    private const float BOUNDS_SIZE = 3.5f;
+    private const float BOUNDS_SIZE = 3.8f;
 	private GameObject[] theStack;
 
     private int stackIndex;
     private int scoreCount = 0;
 
     private float tileTransaction = 0.0f;
-    private float tileSpeed = 1.0f;
+    private float tileSpeed = 2.0f;
+
+    private bool isMovingOnX = true;
 
 	private void Start () {
 		theStack = new GameObject[transform.childCount ];
@@ -40,8 +42,14 @@ public class TheStack : MonoBehaviour {
 
     private void MoveTile(){
         tileTransaction += Time.deltaTime * tileSpeed;
-        theStack[stackIndex].transform.localPosition 
-                            = new Vector3(Mathf.Sin(tileTransaction * BOUNDS_SIZE)*3, scoreCount, 0);
+        if (isMovingOnX)
+        {
+            theStack[stackIndex].transform.localPosition
+                                = new Vector3(Mathf.Sin(tileTransaction) * BOUNDS_SIZE, scoreCount, 0);
+        }else{
+            theStack[stackIndex].transform.localPosition
+                                = new Vector3(0, scoreCount, Mathf.Sin(tileTransaction) * BOUNDS_SIZE);
+        }
     }
 
 
@@ -55,6 +63,7 @@ public class TheStack : MonoBehaviour {
     }
 
     private bool PlaceTile(){
+        isMovingOnX = !isMovingOnX;
         return true;
     }
 
