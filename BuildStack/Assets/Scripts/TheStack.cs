@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class TheStack : MonoBehaviour {
 
+
+    private const float BOUNDS_SIZE = 3.5f;
 	private GameObject[] theStack;
 
     private int stackIndex;
     private int scoreCount = 0;
+
+    private float tileTransaction = 0.0f;
+    private float tileSpeed = 1.0f;
 
 	private void Start () {
 		theStack = new GameObject[transform.childCount ];
@@ -18,26 +23,44 @@ public class TheStack : MonoBehaviour {
 
 	}
 
-	private void Update () {
-        if(Input.GetMouseButtonDown(0)){
-            spawnTile();
+
+    private void Update(){
+        if (Input.GetMouseButtonDown(0)){
+            if (PlaceTile()) { }
+            SpawnTile();
             scoreCount++;
+        }else{
+            EndGame();
         }
 
-	}
+        MoveTile();
+    }
+	
 
-    private void spawnTile(){
+
+    private void MoveTile(){
+        tileTransaction += Time.deltaTime * tileSpeed;
+        theStack[stackIndex].transform.localPosition 
+                            = new Vector3(Mathf.Sin(tileTransaction * BOUNDS_SIZE)*3, scoreCount, 0);
+    }
+
+
+    private void SpawnTile(){
         stackIndex--;
         if(stackIndex < 0){
             stackIndex = transform.childCount - 1;
         }
 
         theStack[stackIndex].transform.localPosition = new Vector3(0, scoreCount, 0); 
-
     }
 
-    private void PlaceTile(){
+    private bool PlaceTile(){
+        return true;
+    }
 
+
+    private void EndGame(){
+        
     }
 
 }
