@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TheStack : MonoBehaviour {
 
-
+    private const float STACK_MOVING_SPEED = 5.0f;
     private const float BOUNDS_SIZE = 3.8f;
 	private GameObject[] theStack;
 
@@ -13,7 +13,9 @@ public class TheStack : MonoBehaviour {
 
     private float tileTransaction = 0.0f;
     private float tileSpeed = 2.0f;
+    private float secondaryPossition;
 
+    private Vector3 desiredPosition;
     private bool isMovingOnX = true;
 
 	private void Start () {
@@ -36,6 +38,8 @@ public class TheStack : MonoBehaviour {
         }
 
         MoveTile();
+
+        transform.position = Vector3.Lerp(transform.position, desiredPosition, STACK_MOVING_SPEED * Time.deltaTime);
     }
 	
 
@@ -45,10 +49,10 @@ public class TheStack : MonoBehaviour {
         if (isMovingOnX)
         {
             theStack[stackIndex].transform.localPosition
-                                = new Vector3(Mathf.Sin(tileTransaction) * BOUNDS_SIZE, scoreCount, 0);
+                                = new Vector3(Mathf.Sin(tileTransaction) * BOUNDS_SIZE, scoreCount, secondaryPossition);
         }else{
             theStack[stackIndex].transform.localPosition
-                                = new Vector3(0, scoreCount, Mathf.Sin(tileTransaction) * BOUNDS_SIZE);
+                                = new Vector3(secondaryPossition, scoreCount, Mathf.Sin(tileTransaction) * BOUNDS_SIZE);
         }
     }
 
@@ -59,10 +63,16 @@ public class TheStack : MonoBehaviour {
             stackIndex = transform.childCount - 1;
         }
 
+        desiredPosition = (Vector3.down) * scoreCount;
         theStack[stackIndex].transform.localPosition = new Vector3(0, scoreCount, 0); 
     }
 
-    private bool PlaceTile(){
+    private bool PlaceTile()
+    {
+        Transform t = theStack[stackIndex].transform;
+
+        secondaryPossition = isMovingOnX ? t.localPosition.x : t.localPosition.z;
+
         isMovingOnX = !isMovingOnX;
         return true;
     }
