@@ -100,6 +100,12 @@ public class TheStack : MonoBehaviour {
                 t.localScale = new Vector3(stacksBounds.x, 1, stacksBounds.y);
                 t.localPosition = new Vector3(middle - (lastTilePossition.x / 2), scoreCount, lastTilePossition.z);
             }
+            else
+            {
+                combo++;
+                t.localPosition = lastTilePossition + Vector3.up;
+
+            }
         }else{
             float deltaZ = lastTilePossition.z - t.position.z;
             if (Mathf.Abs(deltaZ) > ERROR_MARGIN)
@@ -116,6 +122,12 @@ public class TheStack : MonoBehaviour {
                 float middle = lastTilePossition.z + t.localPosition.z / 2;
                 t.localScale = new Vector3(stacksBounds.x, 1, stacksBounds.y);
                 t.localPosition = new Vector3(lastTilePossition.x, scoreCount, middle - (lastTilePossition.z / 2));
+            }
+            else
+            {
+                combo++;
+                t.localPosition = lastTilePossition + Vector3.up;
+
             }
         }
 
