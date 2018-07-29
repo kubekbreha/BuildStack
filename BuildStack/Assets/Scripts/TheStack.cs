@@ -23,6 +23,7 @@ public class TheStack : MonoBehaviour {
     private Vector3 lastTilePossition;
 
     private bool isMovingOnX = true;
+    private bool gameOver = false;
 
 	private void Start () {
 		theStack = new GameObject[transform.childCount ];
@@ -35,14 +36,15 @@ public class TheStack : MonoBehaviour {
 
 
     private void Update(){
-        if (Input.GetMouseButtonDown(0)){
-            if (PlaceTile()) { }
-            SpawnTile();
-            scoreCount++;
-        }else{
-            EndGame();
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (PlaceTile()){
+                SpawnTile();
+                scoreCount++;
+            }else{
+                EndGame();
+            }
         }
-
         MoveTile();
 
         transform.position = Vector3.Lerp(transform.position, desiredPosition, STACK_MOVING_SPEED * Time.deltaTime);
@@ -51,6 +53,10 @@ public class TheStack : MonoBehaviour {
 
 
     private void MoveTile(){
+        if(gameOver){
+            return;
+        }
+
         tileTransaction += Time.deltaTime * tileSpeed;
         if (isMovingOnX)
         {
@@ -120,7 +126,9 @@ public class TheStack : MonoBehaviour {
 
 
     private void EndGame(){
-        
+        Debug.Log("You Lose.");
+        gameOver = true;
+        theStack[stackIndex].AddComponent<Rigidbody>();
     }
 
 }
