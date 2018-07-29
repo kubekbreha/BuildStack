@@ -103,7 +103,7 @@ public class TheStack : MonoBehaviour {
             else
             {
                 combo++;
-                t.localPosition = lastTilePossition + Vector3.up;
+                t.localPosition = new Vector3(lastTilePossition.x, scoreCount, lastTilePossition.z);
 
             }
         }else{
@@ -126,7 +126,7 @@ public class TheStack : MonoBehaviour {
             else
             {
                 combo++;
-                t.localPosition = lastTilePossition + Vector3.up;
+                t.localPosition = new Vector3(lastTilePossition.x, scoreCount, lastTilePossition.z);
 
             }
         }
