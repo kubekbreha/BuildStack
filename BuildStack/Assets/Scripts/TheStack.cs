@@ -78,6 +78,7 @@ public class TheStack : MonoBehaviour {
 
         desiredPosition = (Vector3.down) * scoreCount;
         theStack[stackIndex].transform.localPosition = new Vector3(0, scoreCount, 0); 
+        theStack[stackIndex].transform.localScale = new Vector3(stacksBounds.x, 1, stacksBounds.y); 
     }
 
     private bool PlaceTile()
