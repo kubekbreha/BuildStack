@@ -50,6 +50,9 @@ public class TheStack : MonoBehaviour
 
     private void Update()
     {
+        if (gameOver)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             if (PlaceTile())
@@ -93,12 +96,7 @@ public class TheStack : MonoBehaviour
      */
     private void MoveTile()
     {
-        //moving tile while game is not over 
-        if (gameOver)
-        {
-            return;
-        }
-
+     
         //moving tile up and down, using sinus to get walue from -1 to 1 every time tileTransaction value grows
         tileTransaction += Time.deltaTime * tileSpeed;
         if (isMovingOnX)
@@ -290,6 +288,10 @@ public class TheStack : MonoBehaviour
      */
     private void EndGame()
     {
+        //if(PlayerPrefs.GetInt("Score") > scoreCount){
+            PlayerPrefs.SetInt("Score", scoreCount);
+        //}
+
         Debug.Log("You Lose.");
         endPanel.SetActive(true);
         gameOver = true;
