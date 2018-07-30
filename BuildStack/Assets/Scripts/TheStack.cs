@@ -5,7 +5,8 @@
  */
 public class TheStack : MonoBehaviour
 {
-    
+    public Color32[] tileCollors = new Color32[4];
+
     private const float STACK_MOVING_SPEED = 5.0f;
     private const float BOUNDS_SIZE = 3.5f;
     private const float ERROR_MARGIN = 0.15f;
@@ -72,6 +73,8 @@ public class TheStack : MonoBehaviour
         go.transform.localPosition = position;
         go.transform.localScale = scale;
         go.AddComponent<Rigidbody>();
+
+        ColorMesh(go.GetComponent<MeshFilter>().mesh);
     }
 
 
@@ -125,6 +128,8 @@ public class TheStack : MonoBehaviour
         //setting size and scale of tile which we placing
         theStack[stackIndex].transform.localPosition = new Vector3(0, scoreCount, 0);
         theStack[stackIndex].transform.localScale = new Vector3(stacksBounds.x, 1, stacksBounds.y);
+
+        ColorMesh(theStack[stackIndex].GetComponent<MeshFilter>().mesh);
     }
 
 
@@ -184,7 +189,7 @@ public class TheStack : MonoBehaviour
                     t.localScale = new Vector3(stacksBounds.x,
                                                1,
                                                stacksBounds.y);
-                   
+
                     t.localPosition = new Vector3(middle - (lastTilePossition.x / 2),
                                                   scoreCount,
                                                   lastTilePossition.z);
@@ -202,7 +207,7 @@ public class TheStack : MonoBehaviour
         else
         {
             float deltaZ = lastTilePossition.z - t.position.z;
-           
+
             //placed perfectly
             if (Mathf.Abs(deltaZ) > ERROR_MARGIN)
             {
@@ -222,7 +227,7 @@ public class TheStack : MonoBehaviour
                 CreateRubble(new Vector3(t.position.x,
                                          t.position.y,
                                          (t.position.z > 0) ? t.position.z + (t.localScale.z / 2) : t.position.z - (t.localScale.z / 2)),
-                           
+
                              new Vector3(t.localScale.x,
                                          1,
                                          Mathf.Abs(deltaZ)));
@@ -246,7 +251,7 @@ public class TheStack : MonoBehaviour
                     t.localScale = new Vector3(stacksBounds.x,
                                                1,
                                                stacksBounds.y);
-                 
+
                     t.localPosition = new Vector3(lastTilePossition.x,
                                                   scoreCount,
                                                   middle - (lastTilePossition.z / 2));
@@ -279,6 +284,45 @@ public class TheStack : MonoBehaviour
         gameOver = true;
         theStack[stackIndex].AddComponent<Rigidbody>();
     }
+
+
+    /*
+     *  Get color lerp.
+     */
+    private Color32 Lerp4(Color32 a, Color32 b, Color32 c, Color32 d, float t)
+    {
+        if (t < 0.33f)
+        {
+            return Color.Lerp(a, b, t / 0.33f);
+        }
+        else if (t < 0.66f)
+        {
+            return Color.Lerp(b, c, (t - 0.33f) / 0.33f);
+        }
+        else
+        {
+            return Color.Lerp(c, d, (t - 0.66f) / 0.66f);
+        }
+    }
+
+
+    private void ColorMesh(Mesh mesh)
+    {
+        Vector3[] vertices = mesh.vertices;
+        Color32[] colors = new Color32[vertices.Length];
+
+        float f = Mathf.Sin(scoreCount * 0.25f);
+
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            colors[i] = Lerp4(tileCollors[0], tileCollors[1], tileCollors[2], tileCollors[3], f);
+        }
+
+        mesh.colors32 = colors;
+
+    }
+
+
 
 }
 
