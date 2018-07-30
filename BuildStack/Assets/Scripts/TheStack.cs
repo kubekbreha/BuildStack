@@ -8,7 +8,7 @@ public class TheStack : MonoBehaviour {
     private const float BOUNDS_SIZE = 3.8f;
     private const float ERROR_MARGIN = 0.1f;
     private const float STACK_BOUNDS_GAIN = 0.25f;
-    private const int COMBO_START_GAIN = 2;
+    private const int COMBO_START_GAIN = 1;
 
 	private GameObject[] theStack;
     private Vector2 stacksBounds = new Vector2(BOUNDS_SIZE, BOUNDS_SIZE);   
@@ -106,6 +106,7 @@ public class TheStack : MonoBehaviour {
             }
             else
             {
+                combo++;
                 if (combo > COMBO_START_GAIN)
                 {
                     Debug.Log("Setting tile bigger.");
@@ -113,10 +114,9 @@ public class TheStack : MonoBehaviour {
                     float middle = lastTilePossition.x + t.localPosition.x / 2;
                     t.localScale = new Vector3(stacksBounds.x, 1, stacksBounds.y);
                     t.localPosition = new Vector3(middle - (lastTilePossition.x / 2), scoreCount, lastTilePossition.z);
+                }else{
+                    t.localPosition = new Vector3(lastTilePossition.x, scoreCount, lastTilePossition.z);
                 }
-
-                combo++;
-                t.localPosition = new Vector3(lastTilePossition.x, scoreCount, lastTilePossition.z);
 
             }
         }else{
@@ -138,6 +138,7 @@ public class TheStack : MonoBehaviour {
             }
             else
             {
+                combo++;
                 if (combo > COMBO_START_GAIN)
                 {
                     Debug.Log("Setting tile bigger.");
@@ -145,10 +146,9 @@ public class TheStack : MonoBehaviour {
                     float middle = lastTilePossition.z + t.localPosition.z / 2;
                     t.localScale = new Vector3(stacksBounds.x, 1, stacksBounds.y);
                     t.localPosition = new Vector3(lastTilePossition.x, scoreCount, middle - (lastTilePossition.z / 2));
+                }else{
+                    t.localPosition = new Vector3(lastTilePossition.x, scoreCount, lastTilePossition.z);
                 }
-
-                combo++;
-                t.localPosition = new Vector3(lastTilePossition.x, scoreCount, lastTilePossition.z);
 
             }
         }
