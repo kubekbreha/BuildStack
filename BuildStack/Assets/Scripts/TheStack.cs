@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /*
  * Created by Kubo Brehuv 29.7.2018.
@@ -7,6 +9,8 @@ public class TheStack : MonoBehaviour
 {
     public Color32[] tileCollors = new Color32[4];
     public Material stackMat;
+    public Text scoreText;
+    public GameObject endPanel;
 
     private const float STACK_MOVING_SPEED = 5.0f;
     private const float BOUNDS_SIZE = 3.5f;
@@ -33,6 +37,7 @@ public class TheStack : MonoBehaviour
 
     private void Start()
     {
+        endPanel.SetActive(false);
         theStack = new GameObject[transform.childCount];
 
         for (int i = 0; i < transform.childCount; i++)
@@ -51,6 +56,7 @@ public class TheStack : MonoBehaviour
             {
                 MoveStack();
                 scoreCount++;
+                scoreText.text = scoreCount.ToString();
             }
             else
             {
@@ -285,8 +291,13 @@ public class TheStack : MonoBehaviour
     private void EndGame()
     {
         Debug.Log("You Lose.");
+        endPanel.SetActive(true);
         gameOver = true;
         theStack[stackIndex].AddComponent<Rigidbody>();
+    }
+
+    public void OnButtonClick(string sceneName){
+        SceneManager.LoadScene(sceneName);
     }
 
 
